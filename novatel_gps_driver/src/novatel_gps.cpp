@@ -150,6 +150,11 @@ namespace novatel_gps_driver
 
   void NovatelGps::Disconnect()
   {
+    if (is_connected_ == true)
+    {
+    Write("unlogall THISPORT_ALL\r\n");
+    }
+
     if (connection_ == SERIAL)
     {
       serial_.Close();
