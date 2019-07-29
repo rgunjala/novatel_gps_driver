@@ -4,6 +4,8 @@ NovAtel GPS Driver [![Build Status](https://travis-ci.org/swri-robotics/novatel_
 1. Overview
 -----------
 
+This is a public fork of the Novatel GPS driver from SWRI. To sync it with the SWRI repo, see here: https://help.github.com/en/articles/syncing-a-fork
+
 This is a C++ [ROS](http://www.ros.org/) driver for [NovAtel](https://www.novatel.com/) GPS / GNSS Receivers.  
 
 Features:
