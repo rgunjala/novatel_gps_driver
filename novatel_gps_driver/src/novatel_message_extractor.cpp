@@ -51,6 +51,7 @@ namespace novatel_gps_driver
   const std::string NovatelMessageExtractor::NOVATEL_SENTENCE_FLAG = "#";
   const std::string NovatelMessageExtractor::NOVATEL_ASCII_FLAGS = "$#";
   const std::string NovatelMessageExtractor::NOVATEL_BINARY_SYNC_BYTES = "\xAA\x44\x12";
+  const std::string NovatelMessageExtractor::NOVATEL_SHORT_BINARY_SYNC_BYTES = "\xAA\x44\x13";
   const std::string NovatelMessageExtractor::NOVATEL_ENDLINE = "\r\n";
   
   uint32_t NovatelMessageExtractor::CRC32Value(int32_t i)
@@ -145,7 +146,7 @@ namespace novatel_gps_driver
                            size_t start_idx,
                            BinaryMessage& msg)
   {
-    if (str.length() < HeaderParser::BINARY_HEADER_LENGTH + 4)
+    if (str.length() < HeaderParser::BINARY_SHORT_HEADER_LENGTH + 4)
     {
       // The shortest a binary message can be (header + no data + CRC)
       // is 32 bytes, so just return if we don't have at least that many.
@@ -167,7 +168,8 @@ namespace novatel_gps_driver
       return -2;
     }
 
-    if (msg.header_.header_length_ != HeaderParser::BINARY_HEADER_LENGTH)
+    if ((msg.header_.header_length_ != HeaderParser::BINARY_HEADER_LENGTH) &&
+        (msg.header_.header_length_ != HeaderParser::BINARY_SHORT_HEADER_LENGTH))
     {
       ROS_WARN("Binary header length was unexpected: %u (expected %u)",
                msg.header_.header_length_, HeaderParser::BINARY_HEADER_LENGTH);
@@ -372,7 +374,14 @@ namespace novatel_gps_driver
       size_t ascii_start_idx;
       size_t ascii_end_idx;
       size_t invalid_ascii_idx;
+
       size_t binary_start_idx = input.find(NOVATEL_BINARY_SYNC_BYTES, sentence_start);
+      size_t short_binary_start_idx = input.find(NOVATEL_SHORT_BINARY_SYNC_BYTES, sentence_start);
+
+      if (short_binary_start_idx == 0)
+      {
+        binary_start_idx = 0;
+      }
 
       FindAsciiSentence(input, sentence_start, ascii_start_idx, ascii_end_idx, invalid_ascii_idx);
 
