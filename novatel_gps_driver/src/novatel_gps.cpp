@@ -90,8 +90,8 @@ namespace novatel_gps_driver
       ConnectionType connection)
   {
     NovatelMessageOpts opts;
-    opts["gpgga"] = 0.05;
-    opts["gprmc"] = 0.05;
+//    opts["gpgga"] = 0.05;
+//    opts["gprmc"] = 0.05;
     opts["bestposa"] = 0.05;
     opts["timea"] = 1.0;
     opts["rangea"] = 1;

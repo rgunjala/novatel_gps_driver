@@ -240,7 +240,7 @@ namespace novatel_gps_driver
       swri::param(priv, "publish_novatel_velocity", publish_novatel_velocity_, publish_novatel_velocity_);
       swri::param(priv, "publish_novatel_heading2", publish_novatel_heading2_, publish_novatel_heading2_);
       swri::param(priv, "publish_novatel_dual_antenna_heading", publish_novatel_dual_antenna_heading_, publish_novatel_dual_antenna_heading_);
-      swri::param(priv, "publish_nmea_messages", publish_nmea_messages_, publish_nmea_messages_);
+//      swri::param(priv, "publish_nmea_messages", publish_nmea_messages_, publish_nmea_messages_);
       swri::param(priv, "publish_range_messages", publish_range_messages_, publish_range_messages_);
       swri::param(priv, "publish_time_messages", publish_time_messages_, publish_time_messages_);
       swri::param(priv, "publish_trackstat", publish_trackstat_, publish_trackstat_);
@@ -357,9 +357,9 @@ namespace novatel_gps_driver
         diagnostic_updater_.add("Hardware",
             this,
             &NovatelGpsNodelet::GpsDiagnostic);
-        diagnostic_updater_.add("Data",
-            this,
-            &NovatelGpsNodelet::DataDiagnostic);
+//        diagnostic_updater_.add("Data",
+//            this,
+//            &NovatelGpsNodelet::DataDiagnostic);
         diagnostic_updater_.add("Rate",
             this,
             &NovatelGpsNodelet::RateDiagnostic);
@@ -405,8 +405,8 @@ namespace novatel_gps_driver
       }
 
       NovatelMessageOpts opts;
-      opts["gpgga"] = polling_period_;
-      opts["gprmc"] = polling_period_;
+//      opts["gpgga"] = polling_period_;
+//      opts["gprmc"] = polling_period_;
       opts["bestpos" + format_suffix] = polling_period_;  // Best position
       opts["time" + format_suffix] = 1.0;  // Time
       if (publish_novatel_xyz_positions_)
@@ -442,7 +442,8 @@ namespace novatel_gps_driver
         double period = 1.0 / imu_rate_;
 //        opts["corrimudata" + format_suffix] = period;
         opts["inscov" + format_suffix] = 1.0;
-        opts["inspva" + format_suffix] = period;
+//        opts["inspva" + format_suffix] = period;
+        opts["inspva" + format_suffix] = 0.02;
         opts["insstdev" + format_suffix] = 1.0;
         if (!use_binary_messages_)
         {
